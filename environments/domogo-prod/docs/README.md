@@ -1,0 +1,1 @@
+Look in /docs (global) and /template/docs (environment).

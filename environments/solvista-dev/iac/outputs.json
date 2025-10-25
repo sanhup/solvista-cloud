@@ -1,0 +1,22 @@
+{
+  "ssh_key_fingerprint": {
+    "sensitive": false,
+    "type": "string",
+    "value": "25:d8:7d:a8:22:81:d1:69:72:f8:b2:7f:aa:f8:0f:4f"
+  },
+  "vm_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "111451594"
+  },
+  "vm_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "157.90.154.103"
+  },
+  "vm_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "vm1-solvista-dev"
+  }
+}
