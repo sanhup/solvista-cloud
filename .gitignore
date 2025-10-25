@@ -1,4 +1,50 @@
+# Environment variables
 .env
+
+# Terraform/Tofu state files (NEVER commit these!)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Terraform/Tofu directories
+.terraform/
+
+# Terraform variable files (contain secrets)
 terraform.tfvars
-.terraform
+*.tfvars
+
+# Sensitive recovery files (encrypted versions are safe)
+recovery.yaml
+age-identity.txt
+
+# Encrypted files (already in S3, no need in Git)
+*.age
+*.enc
+
+# Build artifacts
+*.tar.gz
 *.deb
+
+# Lock files (DO commit .terraform.lock.hcl - remove from ignore)
+# .terraform.lock.hcl should be committed!
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+
+# Logs
+*.log
+
+# Age public key (safe to commit but optional)
+# .age-pubkey
