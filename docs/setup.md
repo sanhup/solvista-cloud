@@ -1,23 +1,60 @@
 # Setup Guide
 
-This guide covers the **initial setup** of your Solvista Cloud recovery system. You'll create an encrypted recovery bundle and upload it to S3.
+This guide covers the **initial setup** of your Solvista Cloud with recovery system. We'll create an encrypted recovery bundle and upload it to S3. Everything will be self-hosted.
 
----
+At this point, we only have a computer with linux (or MacOS / WSL (windows)) and access to this repository.
 
-## Prerequisites
+⚠️ This repository will be part of your recovery bundle later!
+⚠️ You can use podman or docker. Both will work.
 
-- [ ] Cloud provider account (Hetzner, AWS, etc.)
-- [ ] S3-compatible storage bucket
-- [ ] Linux/macOS workstation
-- [ ] Basic terminal knowledge
+## Create Cloud
 
----
+Starting from scratch we have a couple of stages. This covers configuring accounts, and creating the initial structure. Later we prepare the infra repo including this document and creating the first version of the recovery bundle.
 
-## Quick Setup
+# Create accounts
+
+In the first steps, we don't really need any IaC. This makes sure we can recover using any linux environment. If we do use IaC it is just for convencience, and might be replaced with manual.
+
+First we need an account on Hetzner (Primary cloud) and another one on Scaleway (Backup only). We don't have any vaults yet, write the accounts down for now.
+
+⚠️ Don't put the credentials in a password vault at this point as this might expose you later!
+
+
+# Create recovery bucket
+
+We will need a s3 object storage for our recovery bucket. I will first describe to setup Minio on any Linux machine. This approach will be used on the primary cloud. For the secondary cloud it is also okay to use the oject storage provided by the cloud provider. This might save some costs.
+
+## General setup
+
+You will need:
+- Any linux machine (can be Mac OS, Windows WSL). We assume debian.
+- Podman and podman compose
+
+### Install podman
+```bash
+# Install Podman
+sudo apt update
+sudo apt install -y podman podman-docker
+
+# Install Podman Compose
+sudo apt install -y python3-pip
+source ~/.bashrc
+pip3 install podman-compose
+```
+
+# Create recovery bucket
+
+
+
+
+
+
+
+
 
 ```bash
 # 1. Install tools
-sudo apt install age awscli
+sudo apt install age awscli diceware
 
 # 2. Generate age key
 age-keygen > age-identity.txt
@@ -50,7 +87,7 @@ aws s3 cp infra-repo.tar.gz s3://your-bucket/
 
 ```bash
 # Ubuntu/Debian
-apt-get install age awscli
+apt-get install age awscli diceware
 
 # Verify openssl (pre-installed)
 openssl version
@@ -66,9 +103,6 @@ tofu version
 Use a strong diceware passphrase:
 
 ```bash
-# Install diceware (optional)
-pip install diceware
-
 # Generate 8-word passphrase
 diceware -n 8
 
