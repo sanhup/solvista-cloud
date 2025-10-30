@@ -7,12 +7,26 @@ At this point, we only have a computer with linux (or MacOS / WSL (windows)) and
 ⚠️ This repository will be part of your recovery bundle later!
 ⚠️ You can use podman or docker. Both will work.
 
-## Create Cloud
 
+## Simple Security Commands
+We can use some simple security commands to generate random keys etc. For diceware you need a python venv
+```bash
+python3 -m venv venv
+. ./venv/bin/activate
+pip3 install diceware
+```
+
+Simple commands:
+```bash
+openssl rand -base64 32
+openssl rand -hex 32
+diceware -n 8
+```
+
+## Create Cloud
 Starting from scratch we have a couple of stages. This covers configuring accounts, and creating the initial structure. Later we prepare the infra repo including this document and creating the first version of the recovery bundle.
 
 # Create accounts
-
 In the first steps, we don't really need any IaC. This makes sure we can recover using any linux environment. If we do use IaC it is just for convencience, and might be replaced with manual.
 
 First we need an account on Hetzner (Primary cloud) and another one on Scaleway (Backup only). We don't have any vaults yet, write the accounts down for now.
@@ -22,13 +36,15 @@ First we need an account on Hetzner (Primary cloud) and another one on Scaleway 
 
 # Create recovery bucket
 
-We will need a s3 object storage for our recovery bucket. I will first describe to setup Minio on any Linux machine. This approach will be used on the primary cloud. For the secondary cloud it is also okay to use the oject storage provided by the cloud provider. This might save some costs.
+We will need a s3 object storage for our recovery bucket. I will first describe to setup Garage S3 on any Linux machine. This approach will be used on the primary cloud. For the secondary cloud it is also okay to use the oject storage provided by the cloud provider. This might save some costs involved.
 
 ## General setup
 
 You will need:
 - Any linux machine (can be Mac OS, Windows WSL). We assume debian.
-- Podman and podman compose
+- Podman and podman compose (needs python)
+
+We will first do this locally. Next we will create a VM and repeat in Hetzner.
 
 ### Install podman
 ```bash
@@ -37,14 +53,63 @@ sudo apt update
 sudo apt install -y podman podman-docker
 
 # Install Podman Compose
-sudo apt install -y python3-pip
-source ~/.bashrc
+sudo apt install -y python3 python3-pip
+## On newer distro's venv is needed
+python3 -m venv ./venv
+. ./venv/bin/activate
 pip3 install podman-compose
 ```
 
-# Create recovery bucket
+### Run garage locally
+Let's do a local testrun. Make sure your venv is active
+```bash
+. ./venv/bin/activate
+cd environments/template/garage
+podman-compose up
+```
 
+The pod is running. Now we get the node id and configure a 1 node layout.
+```bash
+podman exec garage /garage status
+podman exec garage /garage layout assign -z dc1 -c 1G <node_id>
+podman exec garage /garage layout apply --version 1
+```
+where <node_id> corresponds to the identifier of the node shown by garage status (first column).
 
+```bash
+podman exec garage /garage bucket create recovery-bucket
+podman exec garage /garage bucket list
+podman exec garage /garage bucket info recovery-bucket
+
+podman exec garage /garage key create recovery-api-key
+```
+
+This will output the secret. Write this down!
+
+```bash
+## id: GK21225d83fe2e03c261de9c9a
+## name: recovery-api-key
+## secret: a5d055c11a4ea2788891e297e4976a563361cc326beef8e58906fde9278c29ca
+```
+
+Now we can give this buckets some permissions
+```bash
+podman exec garage /garage bucket allow --read --write --owner recovery-bucket --key recovery-api-key
+podman exec garage /garage bucket info recovery-bucket
+```
+
+### Create a file and post to s3
+```bash
+printf 'Hello\nworld\n' > newfile
+export AWS_ACCESS_KEY_ID=GK21225d83fe2e03c261de9c9a      # put your Key ID here
+export AWS_SECRET_ACCESS_KEY=a5d055c11a4ea2788891e297e4976a563361cc326beef8e58906fde9278c29ca  # put your Secret key here
+export AWS_DEFAULT_REGION='garage'
+export AWS_ENDPOINT_URL='http://localhost:3900'
+aws s3 ls
+aws s3 ls s3://recovery-bucket
+aws s3 cp newfile s3://recovery-bucket/newfile
+aws s3 ls s3://recovery-bucket
+```
 
 
 

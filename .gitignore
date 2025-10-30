@@ -48,3 +48,6 @@ Thumbs.db
 
 # Age public key (safe to commit but optional)
 # .age-pubkey
+
+# venv
+venv
