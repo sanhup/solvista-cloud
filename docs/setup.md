@@ -50,14 +50,7 @@ We will first do this locally. Next we will create a VM and repeat in Hetzner.
 ```bash
 # Install Podman
 sudo apt update
-sudo apt install -y podman podman-docker
-
-# Install Podman Compose
-sudo apt install -y python3 python3-pip
-## On newer distro's venv is needed
-python3 -m venv ./venv
-. ./venv/bin/activate
-pip3 install podman-compose
+sudo apt install -y podman podman-compose
 ```
 
 ### Run garage locally
