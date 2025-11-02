@@ -40,7 +40,7 @@ You can rename these, for example I use solvista_id_rsa.
 
 In opentofu, you set the ssh_public_key variable pointed to this file. This way, on creation, your VM already is prepared for ssh access.
 
-## Connect using SSH
+## Connect vm using SSH
 
 ```bash
 ssh -i ./ssh/solvista_id_rsa root@157.90.154.103

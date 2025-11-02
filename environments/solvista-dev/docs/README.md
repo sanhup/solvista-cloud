@@ -1,7 +1,40 @@
 ## About
 This is the solvista-dev setup. 
 
-## VM
+## Infra Setup
+The Hetzner env is setup using opentofu.
+
+### Open Tofu
+On mac you can install it:
+```bash
+brew install opentofu
+```
+
+On debian/ubuntu you can lookup the latest version in github and download. Example for 1.10.6.
+```bash
+wget https://github.com/opentofu/opentofu/releases/download/v1.10.6/tofu_1.10.6_amd64.deb
+sudo apt install ./tofu_1.10.6_amd64.deb
+```
+
+### S3 for tfstate
+The state will be stored in a s3 bucket. Create it in Hetzner.
+
+bucket name: solvista-dev-tfstate
+region: fsn1 (falkenstein)
+
+This will give the url: fsn1.your-objectstorage.com
+
+Next you will need to create credentials for this bucket in Hetzner (go to security -> s3 credentials). Store them safely, they will not be visible at all time.
+
+### Run Tofu
+```bash
+export AWS_ACCESS_KEY_ID="your-hetzner-access-key"
+export AWS_SECRET_ACCESS_KEY="your-hetzner-secret-key"
+tofu plan
+tofu apply
+```
+
+## VM Access
 This assumes the VM is already created using opentofu and up and running.
 
 Lookup the ip address in ./iac/output.json

@@ -5,6 +5,15 @@ terraform {
       version = "~> 1.52"
     }
   }
+  backend "s3" {
+    endpoint   = "https://fsn1.your-objectstorage.com"
+    bucket     = "solvista-dev-tfstate"
+    key        = "terraform.tfstate"
+    region     = "eu-central-1 "
+    use_path_style = true
+    skip_credentials_validation = true
+    skip_region_validation      = true
+  }
 }
 
 provider "hcloud" {
