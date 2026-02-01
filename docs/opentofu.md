@@ -34,7 +34,7 @@ tofu init
 This wil initialize open tofu. When you are ready, you can apply the changes against your cloud and store outputs in a json.
 
 ```bash
-cd /environments/solvista-dev/iac
+cd iac
 export AWS_ACCESS_KEY_ID="your-hetzner-access-key"
 export AWS_SECRET_ACCESS_KEY="your-hetzner-secret-key"
 tofu plan
@@ -51,21 +51,3 @@ cd .
 ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
 ```
 
-# First Time Setup
-
-## Install podman
-
-```bash
-apt-get update
-apt-get install -y podman podman-compose
-```
-
-## Setup Github Deployment
-In your vm, create a key for github deployment. Inspect the key when created.
-
-```bash
-ssh-keygen -t ed25519 -C "hetzner-deploy"
-cat ~/.ssh/id_ed25519.pub
-```
-
-Add the key github user account (in your online account). Don't use per repo, use your generic user ssh (else you need a new key for each repo)
