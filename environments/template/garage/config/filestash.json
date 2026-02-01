@@ -1,8 +1,0 @@
-{
-  "s3": {
-    "endpoint": "https://garages:3900",
-    "region": "garage",
-    "accessKeyId": "GK21225d83fe2e03c261de9c9a",
-    "secretAccessKey": "a5d055c11a4ea2788891e297e4976a563361cc326beef8e58906fde9278c29ca"
-  }
-}

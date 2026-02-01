@@ -1,12 +1,11 @@
 # Setup Guide
 
-This guide covers the **initial setup** of your Solvista Cloud with recovery system. We'll create an encrypted recovery bundle and upload it to S3. Everything will be self-hosted.
+This guide covers the **initial setup** of your Solvista Cloud with recovery system.
 
 At this point, we only have a computer with linux (or MacOS / WSL (windows)) and access to this repository.
 
 ⚠️ This repository will be part of your recovery bundle later!
 ⚠️ You can use podman or docker. Both will work.
-
 
 ## Simple Security Commands
 We can use some simple security commands to generate random keys etc. For diceware you need a python venv
@@ -23,7 +22,9 @@ openssl rand -hex 32
 diceware -n 8
 ```
 ## Setup SSH
-On your local machine you should have a ssh key. This key is used when creating the vm machine (opentofu)
+For both VM setup and deployment you need a set of ssh keys.
+
+This key is required when creating the vm machine (opentofu). It is also required when you later want to connect to the server.
 
 You can create it like this:
 ```bash
@@ -40,8 +41,3 @@ You can rename these, for example I use solvista_id_rsa.
 
 In opentofu, you set the ssh_public_key variable pointed to this file. This way, on creation, your VM already is prepared for ssh access.
 
-## Connect vm using SSH
-
-```bash
-ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
-```
