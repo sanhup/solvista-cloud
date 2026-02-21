@@ -1,0 +1,17 @@
+api.solvista.nl {
+
+    handle_path /postcode-nl/* {
+        reverse_proxy localhost:8002
+    }
+
+    handle_path /iam/* {
+        reverse_proxy localhost:8001
+    }
+
+    # Security headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+}
