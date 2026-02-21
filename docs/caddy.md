@@ -2,6 +2,8 @@
 
 Caddy acts as the reverse proxy on the solvista cloud server. It handles TLS (automatic HTTPS via Let's Encrypt) and routes incoming requests to the correct backend service based on subdomain and path.
 
+This file contains the instructions how to set it up, but also how to deploy (copy) the caddyfile to the server.
+
 ## Structure
 
 All Caddyfiles live in the `solvista-cloud` repo under `caddy/`:
@@ -97,7 +99,13 @@ sudo systemctl reload caddy
 ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
 ```
 
-The private key lives in `ssh/solvista_id_rsa` in this repo (gitignored). Run the command from the repo root so the relative path resolves correctly.
+Copy a Caddyfile to the server:
+
+```bash
+scp -i ./ssh/solvista_id_rsa caddy/solvista-api-caddyfile root@157.90.154.103:/etc/caddy/sites/
+```
+
+The private key lives in `ssh/solvista_id_rsa` in this repo (gitignored). Run commands from the repo root so the relative path resolves correctly.
 
 ---
 
