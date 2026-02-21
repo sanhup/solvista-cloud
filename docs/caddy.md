@@ -74,7 +74,7 @@ Both approaches coexist — the main `/etc/caddy/sites/` directory imports all f
 
 ---
 
-## Adding a new service
+## Adding a new service on the server
 
 1. Add a `handle_path` block to `caddy/solvista-api-caddyfile`:
 
@@ -84,30 +84,13 @@ handle_path /myservice/* {
 }
 ```
 
-2. Deploy the updated file and reload:
-
-```bash
-sudo cp caddy/solvista-api-caddyfile /etc/caddy/sites/
-sudo systemctl reload caddy
-```
-
----
-
-## Connecting to the server
-
-```bash
-ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
-```
-
-Copy a Caddyfile to the server:
+2. Deploy Caddyfile to the server:
 
 ```bash
 scp -i ./ssh/solvista_id_rsa caddy/solvista-api-caddyfile root@157.90.154.103:/etc/caddy/sites/
+ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
+sudo systemctl reload caddy
 ```
-
-The private key lives in `ssh/solvista_id_rsa` in this repo (gitignored). Run commands from the repo root so the relative path resolves correctly.
-
----
 
 ## Initial server setup
 
