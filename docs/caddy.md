@@ -91,12 +91,17 @@ sudo systemctl reload caddy
 
 ---
 
-## Initial server setup
+## Connecting to the server
 
 ```bash
-# Connect to the server
 ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
 ```
+
+The private key lives in `ssh/solvista_id_rsa` in this repo (gitignored). Run the command from the repo root so the relative path resolves correctly.
+
+---
+
+## Initial server setup
 
 ### Install Caddy
 
