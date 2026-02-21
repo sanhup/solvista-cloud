@@ -88,6 +88,7 @@ handle_path /myservice/* {
 
 ```bash
 scp -i ./ssh/solvista_id_rsa caddy/solvista-api-caddyfile root@157.90.154.103:/etc/caddy/sites/
+scp -i ./ssh/solvista_id_rsa caddy/solvista-app-caddyfile root@157.90.154.103:/etc/caddy/sites/
 ssh -i ./ssh/solvista_id_rsa root@157.90.154.103
 sudo systemctl reload caddy
 ```
