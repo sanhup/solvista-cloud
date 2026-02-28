@@ -49,6 +49,7 @@ api.solvista.nl {
 |-----|-------------|
 | `api.solvista.nl/postcode-nl/*` | `localhost:8002` (postcode-nl service) |
 | `api.solvista.nl/iam/*` | `localhost:8001` (solvista-iam backend) |
+| `api.solvista.nl/slack/*` | `localhost:8003` (domogo-slack backend) |
 
 `handle_path` strips the matched prefix before forwarding. So `api.solvista.nl/iam/users` arrives at the backend as `/users`.
 

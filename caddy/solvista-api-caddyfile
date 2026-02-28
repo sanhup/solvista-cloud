@@ -1,11 +1,15 @@
 api.solvista.nl {
 
+    handle_path /iam/* {
+        reverse_proxy localhost:8001
+    }
+
     handle_path /postcode-nl/* {
         reverse_proxy localhost:8002
     }
 
-    handle_path /iam/* {
-        reverse_proxy localhost:8001
+    handle_path /slack/* {
+        reverse_proxy localhost:8003
     }
 
     # Security headers
