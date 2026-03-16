@@ -7,20 +7,6 @@ At this point, we only have a computer with linux (or MacOS / WSL (windows)) and
 ⚠️ This repository will be part of your recovery bundle later!
 ⚠️ You can use podman or docker. Both will work.
 
-## Simple Security Commands
-We can use some simple security commands to generate random keys etc. For diceware you need a python venv
-```bash
-python3 -m venv venv
-. ./venv/bin/activate
-pip3 install diceware
-```
-
-Simple commands:
-```bash
-openssl rand -base64 32
-openssl rand -hex 32
-diceware -n 8
-```
 ## Setup SSH
 For both VM setup and deployment you need a set of ssh keys.
 
@@ -40,4 +26,16 @@ By default, RSA keys are usually:
 You can rename these, for example I use solvista_id_rsa.
 
 In opentofu, you set the ssh_public_key variable pointed to this file. This way, on creation, your VM already is prepared for ssh access.
+
+## Connect to the Server
+
+```bash
+ssh -i ssh/solvista_id_rsa root@157.90.154.103
+```
+
+## Copy files to the Server
+
+```bash
+scp -i ssh/solvista_id_rsa <local-file> root@157.90.154.103:<remote-path>
+```
 
