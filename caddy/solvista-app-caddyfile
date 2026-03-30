@@ -55,14 +55,4 @@ app.solvista.nl {
         encode gzip
     }
 
-    # Add this block inside the app.solvista.nl site in solvista-cloud
-    handle_path /wiki/* {
-        reverse_proxy 127.0.0.1:9001
-
-        header {
-            X-Content-Type-Options nosniff
-            Referrer-Policy strict-origin-when-cross-origin
-        }
-    }
-
 }
