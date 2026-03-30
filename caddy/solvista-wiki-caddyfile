@@ -1,0 +1,9 @@
+wiki.solvista.nl {
+
+    reverse_proxy 127.0.0.1:9001
+
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+}

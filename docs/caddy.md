@@ -51,7 +51,10 @@ All Caddyfiles live in the `solvista-cloud` repo under `caddy/`:
 ```
 solvista-cloud/
 └── caddy/
-    └── solvista-api-caddyfile    ← api.solvista.nl routes
+    ├── solvista-api-caddyfile    ← api.solvista.nl routes
+    ├── solvista-app-caddyfile    ← app.solvista.nl routes
+    ├── solvista-wiki-caddyfile   ← wiki.solvista.nl
+    └── domogo-apps-caddyfile     ← domogo.solvista.nl
 ```
 
 On the server they are placed in `/etc/caddy/sites/`, which is imported by the main Caddyfile:
@@ -60,6 +63,9 @@ On the server they are placed in `/etc/caddy/sites/`, which is imported by the m
 /etc/caddy/Caddyfile          → import /etc/caddy/sites/*
 /etc/caddy/sites/
     solvista-api-caddyfile
+    solvista-app-caddyfile
+    solvista-wiki-caddyfile
+    domogo-apps-caddyfile
 ```
 
 ## How routing works
@@ -92,3 +98,20 @@ api.solvista.nl {
 | `api.solvista.nl/slack/*` | `localhost:8003` (domogo-slack backend) |
 
 `handle_path` strips the matched prefix before forwarding. So `api.solvista.nl/iam/users` arrives at the backend as `/users`.
+
+## App-owned Caddyfiles
+
+Apps that need their own subdomain get a dedicated Caddyfile in `solvista-cloud/caddy/`. This is the single source of truth for all Caddy config — useful when rebuilding the server. App repos may include a `.example` copy for reference.
+
+Example (`solvista-wiki-caddyfile`):
+
+```caddy
+wiki.solvista.nl {
+    reverse_proxy 127.0.0.1:9001
+
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+}
+```
