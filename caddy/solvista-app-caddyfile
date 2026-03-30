@@ -56,7 +56,7 @@ app.solvista.nl {
     }
 
     # Add this block inside the app.solvista.nl site in solvista-cloud
-    handle_path /wiki* {
+    handle_path /wiki/* {
         reverse_proxy 127.0.0.1:9001
 
         header {
