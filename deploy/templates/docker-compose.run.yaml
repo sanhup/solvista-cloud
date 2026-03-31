@@ -1,0 +1,51 @@
+# Template — copy to your project's deploy/ dir and customize.
+# Remove the postgres/init/backend services if BUILD_TYPE=frontend.
+# Remove the frontend comment if BUILD_TYPE=backend.
+#
+# Replace MY_APP with your APP_NAME (hyphens → underscores for service names).
+
+services:
+  my_app_postgres:
+    image: docker.io/postgres:17-alpine
+    container_name: my-app-postgres
+    env_file:
+      - .env
+    volumes:
+      - my_app_postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  my_app_init:
+    image: my-app-backend:latest
+    container_name: my-app-init
+    depends_on:
+      my_app_postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    command: python init_db.py
+
+  my_app_backend:
+    image: my-app-backend:latest
+    container_name: my-app-backend
+    depends_on:
+      my_app_init:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+    volumes:
+      - ./secrets:/app/secrets
+    ports:
+      - "127.0.0.1:800X:8000"      # ← assign a unique host port
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--root-path", "/my-app"]
+    restart: unless-stopped
+
+  # Frontend is extracted to /opt/apps/my-app/frontend/ by deploy.sh — no container needed at runtime.
+
+volumes:
+  my_app_postgres_data:
