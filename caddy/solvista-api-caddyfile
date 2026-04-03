@@ -12,6 +12,10 @@ api.solvista.nl {
         reverse_proxy localhost:8003
     }
 
+    handle_path /viewer/* {
+        reverse_proxy localhost:8004
+    }
+
     # Security headers
     header {
         X-Content-Type-Options nosniff
